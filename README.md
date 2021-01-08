@@ -1,6 +1,6 @@
 # Изучаем Java | HeadFirstJava
 ### Head First Java 2 издание 
-###### Библиотека и редактор
+###### Библиотека исходных кодов задач и редактор
 ***
 ![](https://repository-images.githubusercontent.com/327600546/86179900-51c6-11eb-8f15-10674ed675c3)
 ***
