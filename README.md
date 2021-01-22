@@ -18,3 +18,6 @@
 ***
 ## Требования:
 🧰 JDK (надо будет указать путь к нему, при первом запуске)
+
+***
+![](https://raw.githubusercontent.com/Agzam4/HeadFirstJava-Library_And_Editor/dbb6afccb85bce4f9ed40fcb64bafce46255a898/Headfirstjava/l.svg)
