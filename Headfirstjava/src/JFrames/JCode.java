@@ -180,7 +180,8 @@ public class JCode extends JFrame {
 		consoleP.setMinimumSize(new Dimension(Integer.MAX_VALUE, 500));
 		consoleP.setLayout(new BoxLayout(consoleP, BoxLayout.Y_AXIS));
 		consoleScroll.setViewportView(consoleP);
-		
+
+		JTextPane textPane = new JTextPane();
 		JTextPane console = new JTextPane();
 		console.setText("\n\n\n\n\n");
 		console.setBorder(new EmptyBorder(8, 8, 8, 8));
@@ -261,6 +262,7 @@ public class JCode extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				save(textPane, title2, ul, id);
 				console.setText(">" + myName + "<");
 				comp.compile(getName(), myName, console);
 //				setStyle(console, Compiler.startOfErrs, Compiler.lenghtOfErrs,
@@ -272,6 +274,7 @@ public class JCode extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				save(textPane, title2, ul, id);
 				console.setText(">" + myName + "<");
 				comp.compileAndRun(getName(), myName, console);
 				paintConsole(console);
@@ -340,7 +343,6 @@ public class JCode extends JFrame {
 		lines.setForeground(new Color(200,200,200));
 		setLines(lines, code);
 		
-		JTextPane textPane = new JTextPane();
 		textPane.setBorder(new EmptyBorder(8, 17, 17, 17));
 		textPane.setBackground(new Color(15,15,35));
 		textPane.setForeground(new Color(200,200,200));
@@ -475,6 +477,22 @@ Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
 		 */
 	}
+	
+	private void save(JTextPane textPane, String title2, Uploader ul, int id) {
+		String txt = textPane.getText();
+		if(!savedcode.equals(txt)) {
+			try (FileWriter writer = new FileWriter(new File(getName() + ul.name.get(id) + ".java"))) {
+				writer.write(txt);
+				writer.flush();
+				savedcode = txt;
+				setTitle(title2);
+				myName = ul.name.get(id);
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+	
 	public void AddTiles(JPanel sp, String chap, int page, Uploader uploader,
 			JTextPane textPane, JTextPane lines) {
 		int c = -1;
@@ -504,7 +522,6 @@ Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 			}
 			pos += l.length() + 1;
 		}
-		System.err.println("Style");
 	}
 	
 	private void CreateTile(JPanel sp, int id, int id2, Uploader uploader,
@@ -620,7 +637,7 @@ Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 					if(!isString && !isComment2 && cs[j] == '/' && cs[j+1] == '/') {
 						isComment = true;
 					}
-					if(!isString && !isComment && cs[j] == '/' && cs[j+1] == '*') {
+					if(!isString && !isComment && !isComment2 && cs[j] == '/' && cs[j+1] == '*') {
 						isComment2 = true;
 						csl2 = id2;
 					}
@@ -742,17 +759,17 @@ Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		StyleConstants.setItalic(asNew, i);
 
 		doc.setCharacterAttributes(s, l, asNew, true);
-		System.err.println("StyleSet");
 	}
-		
+	 
+	
 	static final String modificators[] = {
-			" class", " new",
-			" while", " for", " if", " else",
-			" try", " catch",
-			" void", " int",
-			" true", " false",
-			" public", " private", " static", " import",
-			" throws"};
+			" boolean", 	" byte", 		" char", 		" double", 	" float", 		" int", 		" long", 			" short", 		" public", 		" private",
+			" protected", 	" abstract", 	" final", 		" native", 	" static", 		" strictfp", 	" synchronized", 	" transient", 	" volatile", 	" if",
+			" else", 		" do", 			" while",		" switch",	" case", 		" default", 	" for",				" break",		" continue", 	" assert",
+			" class",		" extends",		" implements",	" import",	" instanceof", 	" interface",	" new",				" package",		" super",		" this",
+			" catch",		" finally",		" catch", 		" throw", 	" throws", 		" return", 		" void",			" const",		" goto",		" enum",
+			" true", " false", " null",
+	};
 
 	static final String ss[] = {
 			";","{", "}","=",":","+","-",",",".","[","]","(",")",

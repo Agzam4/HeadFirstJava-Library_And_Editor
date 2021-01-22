@@ -134,7 +134,7 @@ public class Compiler {
 	}
 
 	public String getJdkPath() {
-		return jdkbinPath + "\\bin\\javac.exe";
+		return jdkbinPath.equals("\"") ? "javac" : jdkbinPath + "\\bin\\javac.exe\"";
 //		byte[] all;
 //		try {
 //			all = Files.readAllBytes(Paths.get("jdkData\\jdk-path.txt"));
@@ -164,7 +164,7 @@ public class Compiler {
 		byte[] all;
 		try {
 			all = Files.readAllBytes(Paths.get("jdkData\\jdk-path.txt"));
-			return "\"" + new String(all) + "\"";
+			return "\"" + new String(all);
 		} catch (IOException e) {
 			String input = null;
 			while (input == null) {
@@ -186,7 +186,8 @@ public class Compiler {
 	}
 	
 	public String getJavaPath() {
-		return jdkbinPath + "\\bin\\java.exe";
+//		System.out.println("Java  " + jdkbinPath);
+		return jdkbinPath.equals("\"") ? "java" : jdkbinPath + "\\bin\\java.exe\"";
 //		byte[] all;
 //		try {
 //			all = Files.readAllBytes(Paths.get("jdkData\\java-path.txt"));

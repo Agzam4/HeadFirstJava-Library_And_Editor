@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -33,6 +34,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import Work.Uploader;
 import Work.WindowsButtons;
+import debug.JTestFrame;
 
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
@@ -75,6 +77,7 @@ public class JLibrary extends JFrame {
 	 */
 	public JLibrary() {
 		
+		setIconImage(Toolkit.getDefaultToolkit().getImage(JTestFrame.class.getResource("/JFrames/ICO2.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 900, 600);
 		setLocationRelativeTo(null);
@@ -84,7 +87,8 @@ public class JLibrary extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		contentPane.setBackground(new Color(10,10,25));
 		setContentPane(contentPane);
-		
+
+		// Сброс длины отметок у scrollPane
 		resetСhaptersLenght();
 
 		JButton find = new JButton("Найти");
@@ -99,6 +103,8 @@ public class JLibrary extends JFrame {
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {   
+
+			// UI у scrollPane - VerticalScrollBar
 			
 	        @Override
 	        protected JButton createDecreaseButton(int orientation) {
@@ -125,20 +131,16 @@ public class JLibrary extends JFrame {
 	        @Override
 		    protected void paintThumb( Graphics g, JComponent c, Rectangle tb ) {
 		        g.setColor(new Color(61,61,153, 100));
-//		        tb.width = 7;
 		        g.fillRect(tb.x+1, tb.y+1, tb.width-2, tb.height-2);
 		        g.setColor(new Color(30,30,75));
 		        g.drawRect(tb.x+1, tb.y+1, tb.width-3, tb.height-3);
 		        g.drawRect(tb.x, tb.y, tb.width-1, tb.height-1);
-//		        g.drawRect(tb.x, tb.y, tb.width-3, tb.height-3);
 				g.setColor(Color.WHITE);
 				g.dispose();
-//		        g.dispose();Stroke(new BasicStroke(3));
 	        }
 		    
 	        @Override
 		    protected void paintTrack(Graphics g, JComponent c, Rectangle tb) {
-//		        tb.width = 7; TODO
 		        g.setColor(new Color(10,10,25));
 		        g.fillRect(tb.x, tb.y, tb.width, tb.height );
 		        int ph = 0;
@@ -152,7 +154,7 @@ public class JLibrary extends JFrame {
         		int h = (13*tb.height)/ph;
         		if(h < 1)
         			h = 1;
-        		int id = 0;
+        		// Отрисовка отметок
 		        for (int i = 0; i < chaptersLenght.length; i++) {
 		        	if(chaptersLenght[i] > 0) {
 						g.setColor(new Color(102,255,102,100));
@@ -162,14 +164,9 @@ public class JLibrary extends JFrame {
 				        g.drawRect(tb.x, y, tb.width-1, h);
 			        	py += 13;
 						py += chaptersLenght[i]*25;
-						id++;
 		        	}
 				}
 				g.setColor(Color.WHITE);
-		        /*
-		         * py (y)
-		         * ph h
-		         */
 		    }
 	        
 	    });
@@ -183,6 +180,7 @@ public class JLibrary extends JFrame {
 		JButton bp = new JButton(">");
 		JButton bm = new JButton("<");
 
+		// Конвертаци в кнопки как у Windows 10
 		WindowsButtons.ConvertToWindowsButton(find,
 				new Color(50,50,75), new Color(25,25,50), new Color(100,100,150));
 		WindowsButtons.ConvertToWindowsButton(bm,
@@ -248,6 +246,7 @@ public class JLibrary extends JFrame {
 		keyListener(className, sp);
 		keyListener(page, sp);
 		
+		// Поток для перемотки страниц
 		Thread bt = new Thread() {
 			
 			@Override
@@ -309,7 +308,8 @@ public class JLibrary extends JFrame {
 			}
 		};
 		bt.start();
-		
+
+		// Поток для всплывающего окна
 		Thread hm = new Thread() {
 			
 			@Override
@@ -319,7 +319,6 @@ public class JLibrary extends JFrame {
 					byte[] all = Files.readAllBytes(Paths.get("YouTube.txt"));
 					String string = new String(all);
 					show = !string.equals("https://www.youtube.com/channel/UC1WDVmqsb2gQZH08G86cP8g");
-					System.out.println("Y:" + show);
 				} catch (IOException e1) {
 					show = true;
 				}
@@ -327,7 +326,6 @@ public class JLibrary extends JFrame {
 					byte[] all = Files.readAllBytes(Paths.get("GitHub.txt"));
 					String string = new String(all);
 					show = !string.equals("https://github.com/Agzam4");
-					System.out.println("G:" + show);
 				} catch (IOException e1) {
 					show = true;
 				}
@@ -424,7 +422,7 @@ public class JLibrary extends JFrame {
 		int chapLenght = 0;
 		resetСhaptersLenght();
 		
-		// Creating all tiles
+		// Создание "кнопок"
 		for (int i = 0; i < ids.size(); i++) {
 			if(chaps != uploader.chapter.get(ids.get(i))) {
 				if(chaps > -1)
@@ -432,7 +430,7 @@ public class JLibrary extends JFrame {
 				chapLenght = 0;
 				chaps = uploader.chapter.get(ids.get(i));
 				
-				// Creating chapter seprator
+				// Создание разделителья между главами
 				JPanel mp = new JPanel();
 				mp.setMaximumSize(new Dimension(Integer.MAX_VALUE, 13));
 				mp.setMinimumSize(new Dimension(Integer.MAX_VALUE, 13));
@@ -458,7 +456,6 @@ public class JLibrary extends JFrame {
 		sp.repaint();
 	}
 	
-	// Creating tile
 	private void createTile(JPanel sp, int id, int id2) {
 		JPanel tile = new JPanel();
 		tile.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
@@ -475,7 +472,6 @@ public class JLibrary extends JFrame {
 		setMouseListener(tile, tile, id2);
 	}
 	
-	// Adding MouseListener to Tiles
 	private void setMouseListener(JComponent c, JPanel pp, int id) {
 		c.addMouseListener(new MouseListener() {
 
@@ -501,6 +497,7 @@ public class JLibrary extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				// Открыть редактор
 				JCode.main(uploader.code.get(id), "Глава " + (uploader.chapter.get(id)+1) +
 						" - стр " + uploader.page.get(id) + " | " + uploader.name.get(id), id, uploader);
 			}
