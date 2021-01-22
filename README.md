@@ -20,4 +20,6 @@
 🧰 JDK (надо будет указать путь к нему, при первом запуске)
 
 ***
-![](https://raw.githubusercontent.com/Agzam4/HeadFirstJava-Library_And_Editor/dbb6afccb85bce4f9ed40fcb64bafce46255a898/Headfirstjava/l.svg)
+Если Вы нашли несоответствие программы с программой написанной в книге, используйте метку:
+
+![](https://raw.githubusercontent.com/Agzam4/HeadFirstJava-Library_And_Editor/8edd274835b341f0df3734c6dfcaae0b797040a4/Headfirstjava/l.svg)
